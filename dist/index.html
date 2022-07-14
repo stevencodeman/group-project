@@ -19,6 +19,42 @@
     ></script>
   </head>
   <body>
-    <div>app go here</div>
+    <header>
+      <span class="brandlogo">Todid</span>
+      <nav><a href="#">Fork us on Github</a></nav>
+    </header>
+    <div id="new-task">
+      <h2>New Todo</h2>
+      <form id="new-task-form" action="() => console.log('boop')">
+        <input
+          type="text"
+          name="title"
+          title="Task title"
+          placeholder="What do?"
+        />
+        <textarea
+          name="description"
+          title="Description or notes"
+          placeholder="Where/why/how do?"
+        ></textarea>
+        <input type="date" name="date" title="Due date" />
+        <input
+          type="text"
+          name="assign-to"
+          title="Really not sure what this is for, brud"
+          placeholder="Who do?"
+        />
+        <input type="submit" value="Add Todo" />
+      </form>
+    </div>
+    <div id="task-list">
+      <ul>
+        <li class="todid">Make wireframe</li>
+        <li>Implement HTML of wireframe</li>
+        <li>???</li>
+        <li>Specify application requirements?</li>
+        <li>Profit...?</li>
+      </ul>
+    </div>
   </body>
 </html>
