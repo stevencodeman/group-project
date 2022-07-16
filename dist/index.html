@@ -21,40 +21,66 @@
   <body>
     <header>
       <span class="brandlogo">Todid</span>
-      <nav><a href="#">Fork us on Github</a></nav>
+      <nav>
+        <a
+          href="https://github.com/stevencodeman/group-project"
+          target="_blank"
+        >
+          Fork us on Github
+        </a>
+      </nav>
     </header>
-    <div id="new-task">
-      <h2>New Todo</h2>
-      <form id="new-task-form" action="() => console.log('boop')">
-        <input
-          type="text"
-          name="title"
-          title="Task title"
-          placeholder="What do?"
-        />
-        <textarea
-          name="description"
-          title="Description or notes"
-          placeholder="Where/why/how do?"
-        ></textarea>
-        <input type="date" name="date" title="Due date" />
-        <input
-          type="text"
-          name="assign-to"
-          title="Really not sure what this is for, brud"
-          placeholder="Who do?"
-        />
-        <input type="submit" value="Add Todo" />
-      </form>
-    </div>
-    <div id="task-list">
-      <ul>
-        <li class="todid">Make wireframe</li>
-        <li>Implement HTML of wireframe</li>
-        <li>???</li>
-        <li>Specify application requirements?</li>
-        <li>Profit...?</li>
-      </ul>
-    </div>
+    <main>
+      <div id="new-task">
+        <h2>New Todo</h2>
+        <form id="new-task-form" action="() => console.log('boop')">
+          <label>
+            <span>Task Title</span>
+            <input
+              type="text"
+              name="title"
+              title="Task title"
+              placeholder="What do?"
+            />
+          </label>
+          <label>
+            <span>Description</span>
+            <textarea
+              name="description"
+              title="Description or notes"
+              placeholder="Where/why/how do?"
+            ></textarea>
+          </label>
+          <label>
+            <span>Due Date</span>
+            <input type="date" name="date" title="Due date" />
+          </label>
+          <label>
+            <span>Assigned To</span>
+            <input
+              type="text"
+              name="assign-to"
+              title="Really not sure what this is for, brud"
+              placeholder="Who do?"
+            />
+          </label>
+          <input type="submit" value="Add Todo" />
+        </form>
+      </div>
+      <div>
+        <div class="task-list-nav">
+          <button>All</button>
+          <button>Incomplete</button>
+          <button>Complete</button>
+        </div>
+        <ul id="task-list">
+          <li class="todid">Make wireframe</li>
+          <li>Implement HTML of wireframe</li>
+          <li>???</li>
+          <li>Specify application requirements?</li>
+          <li>Profit...?</li>
+        </ul>
+      </div>
+    </main>
   </body>
 </html>
