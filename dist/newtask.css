@@ -23,6 +23,7 @@ form {
 form label {
   display: flex;
   flex-direction: column;
+  gap: 0.25em;
 }
 
 form > * {
@@ -50,27 +51,51 @@ form > * {
   resize: none;
 }
 
-#new-task form button[type="submit"] {
+#new-task form .form-controls {
   grid-area: submit;
-  margin: auto;
-  background-color: var(--secondary-color);
+  /* margin: auto; */
+  display: flex;
+  gap: 0.5em;
+  justify-content: flex-end;
+}
+
+#new-task form button {
+  /* grid-area: submit; */
+  background-color: lightgrey;
   color: white;
   font-weight: bold;
   border: 0;
-  border-radius: 1em;
-  padding: 1em;
+  border-radius: 0.45em;
   cursor: pointer;
+  padding: 1em;
+}
+
+#new-task form button:hover {
+  background-color: white;
+  color: grey;
+  transition-timing-function: ease-in;
+  transition: 240ms background-color ease-in, 180ms color;
+}
+
+#new-task form button[type="submit"] {
+  background-color: var(--secondary-color);
 }
 
 #new-task form button[type="submit"]:hover {
   background-color: white;
   color: var(--secondary-color);
-  transition-timing-function: ease-in;
-  transition: 240ms background-color;
-  transition: 180ms color;
+  /* transition-timing-function: ease-in;
+  transition: 180ms color; */
+}
+
+#new-task form input,
+#new-task form textarea {
+  border: 0;
+  border-radius: 0.25em;
+  outline: none;
 }
 
 #new-task form input:focus,
 #new-task form textarea:focus {
-  outline: 2px solid var(--secondary-color);
+  outline: 3px solid var(--secondary-color);
 }
