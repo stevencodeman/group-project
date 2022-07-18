@@ -1,0 +1,161 @@
+@import "./checkbox.css";
+
+:root {
+  --brand-color: rgb(240 149 88);
+  --success-color: rgb(98 161 61);
+  --warn-color: rgb(221 186 70);
+  --alert-color: rgb(221 70 70);
+
+  --app-width-max: 800px;
+  --app-width-min: 320px;
+  --app-width: clamp(var(--app-width-min), 70%, var(--app-width-max));
+
+  --display-font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  box-sizing: border-box;
+  background-color: var(--brand-color);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+
+header {
+  width: var(--app-width);
+  /* margin-inline: auto; */
+  margin-top: 1rem;
+  background-color: rgb(224, 203, 105);
+  padding-block: 1em;
+  border-radius: 1em 1em 0 0;
+  /* border-bottom: 2px solid black; */
+}
+
+h1 {
+  font-family: var(--display-font);
+  text-align: center;
+  font-size: 4rem;
+  margin-block: 0;
+  color: var(--brand-color);
+  /* -webkit-text-stroke: 2px black; */
+}
+
+.app {
+  width: var(--app-width);
+  /* margin-inline: auto; */
+  margin-block: 1rem 2rem;
+  padding: 1rem;
+  border: 2px solid white;
+  border-radius: 0 0 2em 2em;
+  background-color: rgba(255 255 255 / 0.1);
+}
+
+h2 {
+  font-family: var(--display-font);
+  font-size: 2rem;
+  text-align: center;
+  text-decoration: 1px underline white;
+  text-underline-offset: 0.35em;
+  text-transform: uppercase;
+  margin-top: 0;
+}
+
+.task-card {
+  display: flex;
+  gap: 1em;
+  align-items: flex-start;
+
+  /* background-color: rgba(0 0 0 / 0.15); */
+  padding: 0.5em;
+
+  /* border: 1px solid; */
+  border-radius: 1em;
+}
+
+.task-card:hover {
+  background-color: rgba(255 255 255 / 0.25);
+  cursor: pointer;
+}
+
+.task-card.completed {
+  color: grey;
+}
+
+/* .task-card.expand {
+  background-color: rgba(0 0 0 / 0.15);
+} */
+
+.task-card .title {
+  display: flex;
+  justify-content: space-between;
+  /* flex-grow: 1; */
+}
+
+.task-card .due-date {
+  background-color: var(--success-color);
+  color: white;
+  padding: 0em 1em;
+  border-radius: 100vw;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.warn .due-date {
+  background-color: var(--warn-color);
+}
+
+.alert .due-date {
+  background-color: var(--alert-color);
+}
+
+.completed .due-date {
+  background-color: grey;
+}
+
+.task-card .data {
+  flex-grow: 1;
+}
+
+/* .task-card.expand .description {
+  display: block;
+}
+
+.task-card .description {
+  display: none;
+} */
+
+.task-card h3 {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 0.8;
+}
+
+.task-card.completed h3 {
+  text-decoration: line-through;
+}
+
+.task-card .description {
+  /* border: 1px solid; */
+  margin-top: 0.5em;
+  padding: 0.25em;
+}
+
+.task-card .description *:first-child {
+  margin-top: 0;
+}
+
+.task-card .description *:last-child {
+  margin-bottom: 0;
+}
+
+.task-card p {
+  margin-block: 0.5em;
+}

@@ -1,0 +1,77 @@
+label.toggle {
+  --width: 2;
+  --height: 1;
+  --toggle-width: calc(var(--width) * 1em);
+  --toggle-height: calc(var(--height) * 1em);
+  --toggle-speed: calc(120ms * var(--width));
+
+  /* border: 2px solid white; */
+  border-radius: 1em;
+  overflow: hidden;
+  margin: 0;
+  display: inline-block;
+
+  cursor: pointer;
+}
+
+label.toggle input[type="checkbox"] {
+  display: none;
+  margin: 0;
+  appearance: none;
+}
+
+label.toggle > div {
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background-color: grey;
+  transition: background-color 80ms;
+
+  position: relative;
+}
+
+label.toggle > input[type="checkbox"]:checked + div {
+  /* background-color: yellowgreen; */
+}
+
+label.toggle > div::after {
+  content: "";
+  display: block;
+  /* background-color: white; */
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+
+  position: absolute;
+  top: 0;
+
+  transform: translateX(calc((var(--width) - 0.5) * -1em));
+  transition: transform calc(var(--toggle-speed) * 0.75) ease-in,
+    background-color calc(var(--toggle-speed) * 0.75) ease-in;
+}
+
+label.toggle input[type="checkbox"]:checked + div::after {
+  background-color: var(--success-color);
+  transform: translateX(0);
+  transition: transform var(--toggle-speed) ease-in,
+    background-color var(--toggle-speed) ease-in;
+}
+
+/* ::before is the bubble */
+label.toggle > div::before {
+  position: absolute;
+  z-index: 10;
+  content: "";
+  display: block;
+  border-radius: var(--toggle-height);
+  width: var(--toggle-height);
+  height: var(--toggle-height);
+  background-color: rgba(255 255 255 / 01.5);
+  /* border: 1px solid red; */
+  transition: calc(var(--toggle-speed) * 0.75) transform ease-in;
+}
+
+label.toggle input[type="checkbox"]:checked + div::before {
+  transform: translateX(calc(var(--toggle-width) - var(--toggle-height)));
+  transition: transform var(--toggle-speed) ease-in;
+  /* background-color: yellow; */
+  /* background-color calc(var(--toggle-speed) * 1.25); */
+}

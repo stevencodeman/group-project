@@ -4,83 +4,70 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doto the Todid App</title>
+    <title>Checkbox Test</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
-    <header>
-      <span class="brandlogo">Todid</span>
-      <nav>
-        <a
-          href="https://github.com/stevencodeman/group-project"
-          target="_blank"
-        >
-          Fork us on Github
-        </a>
-      </nav>
-    </header>
-    <main>
-      <div id="new-task">
-        <h2>New Todo</h2>
-        <form id="new-task-form" action="() => console.log('boop')">
-          <label>
-            <span>Task Title</span>
-            <input
-              type="text"
-              name="title"
-              title="Task title"
-              placeholder="What do?"
-            />
+    <header><h1>Task List</h1></header>
+    <section class="app">
+      <h2>Today's Tasks</h2>
+      <div class="task-card expand completed success">
+        <div>
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <div></div>
           </label>
-          <label>
-            <span>Description</span>
-            <textarea
-              name="description"
-              title="Description or notes"
-              placeholder="Where/why/how do?"
-            ></textarea>
-          </label>
-          <label>
-            <span>Due Date</span>
-            <input type="date" name="date" title="Due date" />
-          </label>
-          <label>
-            <span>Assigned To</span>
-            <input
-              type="text"
-              name="assign-to"
-              title="Really not sure what this is for, brud"
-              placeholder="Who do?"
-            />
-          </label>
-          <input type="submit" value="Add Todo" />
-        </form>
-      </div>
-      <div>
-        <div class="task-list-nav">
-          <button>All</button>
-          <button>Incomplete</button>
-          <button>Complete</button>
         </div>
-        <ul id="task-list">
-          <li class="todid">Make wireframe</li>
-          <li>Implement HTML of wireframe</li>
-          <li>???</li>
-          <li>Specify application requirements?</li>
-          <li>Profit...?</li>
-        </ul>
+        <div class="data">
+          <div class="title">
+            <h3>Make a Wireframe</h3>
+            <span class="due-date">Jul 14</span>
+          </div>
+          <div class="description">
+            <p>Create a wireframe for the tasks/todo appliction</p>
+          </div>
+        </div>
       </div>
-    </main>
+      <div class="task-card completed warn">
+        <div>
+          <label class="toggle">
+            <input type="checkbox" />
+            <div></div>
+          </label>
+        </div>
+        <div class="data">
+          <div class="title">
+            <h3>Create a prototype with bootstrap</h3>
+            <span class="due-date">Jul 18</span>
+          </div>
+          <div class="description">
+            <p>
+              Create a front-end prototype for the tasks/todo application using
+              Bootstrap
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="task-card alert">
+        <div>
+          <label class="toggle">
+            <input type="checkbox" />
+            <div></div>
+          </label>
+        </div>
+        <div class="data">
+          <div class="title">
+            <h3>Create a prototype <em>without</em> bootstrap</h3>
+            <span class="due-date">Jul 18</span>
+          </div>
+          <div class="description">
+            <p>
+              Decide that bootstrap is too hard make right, give up, and just
+              make the prototype by hand
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
