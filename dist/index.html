@@ -9,7 +9,26 @@
   </head>
   <body>
     <header><h1>Task List</h1></header>
-    <section class="app">
+    <section id="new-task">
+      <h2>New Task</h2>
+      <form>
+        <label id="task-title">Task <input type="text" name="title" /></label>
+        <label id="task-assigned"
+          >Assigned to<input type="text" name="assigned-to"
+        /></label>
+        <label id="task-due"
+          >Due date <input type="date" name="due-date"
+        /></label>
+        <label id="task-desc"
+          >Description<textarea
+            name="description"
+            style="height: 8em"
+          ></textarea>
+        </label>
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
+    <main class="app">
       <h2>Today's Tasks</h2>
       <div class="task-card expand completed success">
         <div>
@@ -85,6 +104,6 @@
           </div>
         </div>
       </div>
-    </section>
+    </main>
   </body>
 </html>

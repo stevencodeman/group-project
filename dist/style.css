@@ -1,7 +1,11 @@
 @import "./checkbox.css";
+@import "./newtask.css";
 
 :root {
   --brand-color: rgb(240 149 88);
+  --secondary-color-rgb: 224 203 105;
+  --secondary-color: rgb(var(--secondary-color-rgb));
+
   --success-color: rgb(98 161 61);
   --warn-color: rgb(221 186 70);
   --alert-color: rgb(221 70 70);
@@ -20,6 +24,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1em;
 }
 
 *,
@@ -32,7 +37,7 @@ header {
   width: var(--app-width);
   /* margin-inline: auto; */
   margin-top: 1rem;
-  background-color: rgb(224, 203, 105);
+  background-color: var(--secondary-color);
   padding-block: 1em;
   border-radius: 1em 1em 0 0;
   /* border-bottom: 2px solid black; */
@@ -50,7 +55,6 @@ h1 {
 .app {
   width: var(--app-width);
   /* margin-inline: auto; */
-  margin-block: 1rem 2rem;
   padding: 1rem;
   border: 2px solid white;
   border-radius: 0 0 2em 2em;
