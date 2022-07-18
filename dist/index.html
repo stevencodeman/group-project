@@ -5,105 +5,121 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkbox Test</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header><h1>Task List</h1></header>
-    <section id="new-task">
-      <h2>New Task</h2>
-      <form>
-        <label id="task-title">Task <input type="text" name="title" /></label>
-        <label id="task-assigned"
-          >Assigned to<input type="text" name="assigned-to"
-        /></label>
-        <label id="task-due"
-          >Due date <input type="date" name="due-date"
-        /></label>
-        <label id="task-desc"
-          >Description<textarea
-            name="description"
-            style="height: 8em"
-          ></textarea>
-        </label>
-        <div class="form-controls">
-          <button type="submit">Add Task</button
-          ><button type="reset">Cancel</button>
-        </div>
-      </form>
-    </section>
-    <main class="app">
-      <h2>Today's Tasks</h2>
-      <div class="task-card expand completed success">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" checked />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Make a Wireframe</h3>
-            <span class="due-date">Jul 14</span>
-          </div>
-          <div class="description">
-            <p>Create a wireframe for the tasks/todo appliction</p>
-          </div>
-        </div>
-      </div>
-      <div class="task-card completed warn">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Create a prototype with bootstrap</h3>
-            <span class="due-date">Jul 18</span>
-          </div>
-          <div class="description">
-            <p>
-              Create a front-end prototype for the tasks/todo application using
-              Bootstrap
-            </p>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-sm">
+        <a class="navbar-brand" href="#">TasksMastos</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="bi">🍔</span>
+          <!-- <span class="navbar-toggler-icon"></span> -->
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a href="" class="nav-link"
+                ><i class="bi bi-calendar-check"></i>
+
+                Today's Tasks</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">
+                <i class="bi bi-list-check"></i>
+
+                All Tasks</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="bi bi-clipboard2-plus"></i> New Task</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="bi bi-info-circle"></i> About</a
+              >
+            </li>
+          </ul>
+          <!-- <span class="navbar-text"> Navbar text with an inline element </span> -->
         </div>
       </div>
-      <div class="task-card alert">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Create a prototype <em>without</em> bootstrap</h3>
-            <span class="due-date">Jul 18</span>
+    </nav>
+
+    <main class="container-sm mt-3">
+      <h1>All Tasks</h1>
+      <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+        <div class="col">
+          <div class="card h-100">
+            <h5 class="card-title card-header d-flex justify-content-between">
+              Make a wireframe <span class="bi bi-person-fill">Chelsi</span>
+            </h5>
+            <div class="card-body">
+              <p class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <a href="#" class="btn btn-success">Mark complete</a>
+              <div>
+                <a href="#" class="btn btn-secondary">
+                  <i class="bi bi-gear-fill"></i>
+                </a>
+                <a href="#" class="btn btn-danger"
+                  ><i class="bi bi-trash-fill"></i
+                ></a>
+              </div>
+            </div>
           </div>
-          <div class="description">
-            <p>
-              Decide that bootstrap is too hard make right, give up, and just
-              make the prototype by hand
-            </p>
-          </div>
         </div>
-      </div>
-      <div class="task-card">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Deliver final project</h3>
-            <span class="due-date">Sep 22</span>
-          </div>
-          <div class="description">
-            <p>Finish the tasks app and deliver working prototype</p>
+
+        <div class="col">
+          <div class="card h-100">
+            <h5 class="card-title card-header d-flex justify-content-between">
+              Make a prototype using Bootstrap
+              <span class="bi bi-person-fill">Saadia</span>
+            </h5>
+            <div class="card-body">
+              <p class="card-text">
+                Make a front-end prototype using Bootstrap.
+              </p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <a href="#" class="btn btn-success">Mark complete</a>
+              <div>
+                <a href="#" class="btn btn-secondary">
+                  <i class="bi bi-gear-fill"></i>
+                </a>
+                <a href="#" class="btn btn-danger"
+                  ><i class="bi bi-trash-fill"></i
+                ></a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
