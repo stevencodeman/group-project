@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkbox Test</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
   </head>
   <body>
     <header><h1>Task List</h1></header>
@@ -33,79 +34,25 @@
     </section>
     <main class="app">
       <h2>Today's Tasks</h2>
-      <div class="task-card expand completed success">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" checked />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Make a Wireframe</h3>
-            <span class="due-date">Jul 14</span>
-          </div>
-          <div class="description">
-            <p>Create a wireframe for the tasks/todo appliction</p>
-          </div>
-        </div>
-      </div>
-      <div class="task-card completed warn">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Create a prototype with bootstrap</h3>
-            <span class="due-date">Jul 18</span>
-          </div>
-          <div class="description">
-            <p>
-              Create a front-end prototype for the tasks/todo application using
-              Bootstrap
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="task-card alert">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
-        </div>
-        <div class="data">
-          <div class="title">
-            <h3>Create a prototype <em>without</em> bootstrap</h3>
-            <span class="due-date">Jul 18</span>
-          </div>
-          <div class="description">
-            <p>
-              Decide that bootstrap is too hard make right, give up, and just
-              make the prototype by hand
-            </p>
-          </div>
-        </div>
-      </div>
+
       <div class="task-card">
-        <div>
-          <label class="toggle">
-            <input type="checkbox" />
-            <div></div>
-          </label>
+        <label class="toggle-too">
+          <input value="task123" type="checkbox" />
+          <h3>Create MVP</h3>
+        </label>
+        <div class="task-description">Deliver minimum-viable product</div>
+        <div class="task-due-date">Due: September 6, 2022</div>
+      </div>
+
+      <div class="task-card completed">
+        <label class="toggle-too">
+          <input value="task456" type="checkbox" checked />
+          <h3>Make a Wireframe</h3>
+        </label>
+        <div class="task-description">
+          Create a wireframe fro the tasks/todo app
         </div>
-        <div class="data">
-          <div class="title">
-            <h3>Deliver final project</h3>
-            <span class="due-date">Sep 22</span>
-          </div>
-          <div class="description">
-            <p>Finish the tasks app and deliver working prototype</p>
-          </div>
-        </div>
+        <div class="task-due-date">Due: July somefin, 2022</div>
       </div>
     </main>
   </body>

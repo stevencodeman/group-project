@@ -62,7 +62,7 @@ form > * {
 #new-task form button {
   /* grid-area: submit; */
   background-color: lightgrey;
-  color: white;
+  color: black;
   font-weight: bold;
   border: 0;
   border-radius: 0.45em;

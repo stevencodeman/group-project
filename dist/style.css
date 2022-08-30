@@ -1,9 +1,9 @@
-@import "./checkbox.css";
-@import "./newtask.css";
+/* @import './checkbox.css'; */
+@import './newtask.css';
 
 :root {
-  --brand-color: rgb(240 149 88);
-  --secondary-color-rgb: 224 203 105;
+  --brand-color: rgb(255 145 77);
+  --secondary-color-rgb: 255 225 106;
   --secondary-color: rgb(var(--secondary-color-rgb));
 
   --success-color: rgb(98 161 61);
@@ -14,23 +14,86 @@
   --app-width-min: 320px;
   --app-width: clamp(var(--app-width-min), 70%, var(--app-width-max));
 
-  --display-font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --display-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --width: 2;
+  --height: 1;
+  --toggle-width: calc(var(--width) * 1em);
+  --toggle-height: calc(var(--height) * 1em);
+  --toggle-speed: calc(120ms * var(--width));
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html *,
+html *::before,
+html *::after {
+  box-sizing: inherit;
+}
+
+label.toggle-too {
+  width: 100%;
+}
+
+label.toggle-too input[type='checkbox'] {
+  display: none;
+}
+
+label.toggle-too h3 {
+  position: relative;
+  padding-left: calc(var(--toggle-width) + 1em);
+  cursor: pointer;
+  min-height: var(--toggle-height);
+}
+
+label.toggle-too.completed h3 {
+  text-decoration: line-through;
+  color: grey;
+}
+
+label.toggle-too h3::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: '';
+  display: block;
+  background-color: grey;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: var(--toggle-height);
+}
+
+.completed label.toggle-too h3::before {
+  background-color: greenyellow;
+}
+
+label.toggle-too h3::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  content: '';
+  display: block;
+  background-color: white;
+  left: 0;
+  width: var(--toggle-height);
+  height: var(--toggle-height);
+  border-radius: var(--toggle-height);
+}
+
+.completed label.toggle-too h3::after {
+  left: calc(var(--toggle-width) - var(--toggle-height));
 }
 
 body {
-  box-sizing: border-box;
   background-color: var(--brand-color);
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
-}
-
-*,
-::before,
-::after {
-  box-sizing: inherit;
 }
 
 header {
@@ -49,7 +112,6 @@ h1 {
   font-size: 4rem;
   margin-block: 0;
   color: var(--brand-color);
-  /* -webkit-text-stroke: 2px black; */
 }
 
 .app {
@@ -73,14 +135,20 @@ h2 {
 
 .task-card {
   display: flex;
-  gap: 1em;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.75em;
+  align-items: stretch;
 
   /* background-color: rgba(0 0 0 / 0.15); */
   padding: 0.5em;
 
   /* border: 1px solid; */
   border-radius: 1em;
+}
+
+.task-card > * {
+  /* width: 100%; */
+  /* outline: 2px solid red; */
 }
 
 .task-card:hover {
@@ -107,7 +175,7 @@ h2 {
   color: white;
   padding: 0em 1em;
   border-radius: 100vw;
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 0.8em;
   font-weight: 700;
 }
@@ -138,7 +206,7 @@ h2 {
 
 .task-card h3 {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 0.8;
 }
 
