@@ -166,7 +166,8 @@ function displayTodos() {
     });
 
     deleteButton.addEventListener('click', (e) => {
-      todos = todos.filter((t) => t != todo);
+      // use triple equals
+      todos = todos.filter((t) => t !== todo);
       localStorage.setItem('todos', JSON.stringify(todos));
       displayTodos();
     });
