@@ -1,5 +1,9 @@
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
+/*
+    added this to store the data for the running app
+    currently, just putting the `filter` value in here
+*/
 const state = {
   filter: 'all',
 };
@@ -7,36 +11,39 @@ const state = {
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
   const newTodoForm = document.querySelector('#new-todo-form');
+
+  // filter toggle button
   const filterCompleteButton = document.getElementById('filterComplete');
 
+  // on click for the button
   filterCompleteButton.addEventListener('click', (e) => {
     e.preventDefault();
 
+    // using this switch for the different filter states
     switch (state.filter) {
+      // the default branch should never hit, but if we add a filter state
+      // and forget to handle that case, it's going to throw
+      // not great, but cheap and easy and we can "fix" it later
       default: {
         throw new Error(`You forgot filter state for "${state.filter}`);
       }
+      // order of filter toggle is "all" -> "complete" -> "incomplete"
       case 'all': {
-        console.log('filteer "all" -> "complete"');
         state.filter = 'complete';
         filterCompleteButton.innerText = 'Show Incomplete';
-        console.log('all', `state.filter: ${state.filter}`);
-        break;
+        break; // breaks out of the `switch` statement without fall through
       }
       case 'complete': {
-        console.log('filter "complete" -> "incomplete"');
         state.filter = 'incomplete';
-        filterCompleteButton.innerText = 'Show All';
         break;
       }
       case 'incomplete': {
-        console.log('filter "incomplete" -> "all"');
         state.filter = 'all';
-        filterCompleteButton.innerText = 'Show Complete';
         break;
       }
     }
 
+    // call `displayTodos` to update the view on page
     displayTodos();
   });
 
@@ -75,19 +82,21 @@ function displayTodos() {
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
 
+  // filter the todos by `done` property
   const filteredTodos = todos.filter((todo) => {
     switch (state.filter) {
       default:
         throw new Error(`You forgot to handle filter "${state.filter}"`);
-      case 'all':
+      case 'all': // always return true because we're keeping all
         return true;
-      case 'complete':
+      case 'complete': // keep if the `done` prop is `true`
         return todo.done;
-      case 'incomplete':
+      case 'incomplete': // opposite of "complete"
         return !todo.done;
     }
   });
 
+  // replace "global" `todos` with our filtered copy
   filteredTodos.forEach((todo) => {
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
