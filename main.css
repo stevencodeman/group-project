@@ -13,6 +13,10 @@
   --work-glow: 0px 0px 4px rgba(37, 114, 229, 0.75);
   --other-glow: 0px 0px 4px rgba(0, 0, 0, 0.75);
 
+  --button-bg-color: var(--grey);
+  --button-bg-color-hover: yellowgreen;
+  --button-bg-color-active: coral;
+
   scrollbar-gutter: stable;
   scrollbar-width: thin;
 }
@@ -252,7 +256,6 @@ input:checked ~ .bubble::after {
   border: 1px solid black;
   border-radius: 0.5em;
   padding: 0.5em;
-  width: 12ch;
 }
 
 .filter {
@@ -261,6 +264,10 @@ input:checked ~ .bubble::after {
 
 .filter button {
   border-radius: 0;
+}
+
+.filter button span.text {
+  display: none;
 }
 
 .filter button + button {
@@ -276,7 +283,7 @@ input:checked ~ .bubble::after {
 }
 
 .filter button:hover {
-  background-color: yellowgreen;
+  background-color: var(--button-bg-color-hover);
   color: white;
   cursor: pointer;
 }
@@ -287,5 +294,14 @@ input:checked ~ .bubble::after {
 }
 
 .filter button.active {
-  background-color: coral;
+  background-color: var(--button-bg-color-active);
+}
+
+@media only screen and (min-width: 600px) {
+  .filter button {
+    width: 12ch;
+  }
+  .filter button span.text {
+    display: initial;
+  }
 }

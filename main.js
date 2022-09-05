@@ -6,7 +6,7 @@ let todos = JSON.parse(localStorage.getItem('todos')) || [];
 */
 const state = {
   username: localStorage.getItem('username') || '',
-  filter: 'all',
+  filter: null,
 };
 
 // filters
@@ -16,31 +16,26 @@ const filters = {
   incomplete: (todo) => !todo.done,
 };
 
-const filterButtonText = {
-  all: 'Complete',
-  complete: 'Incomplete',
-  incomplete: 'All',
-};
-
 const filterToButtonText = (filter) =>
   filterButtonText[filter] ?? 'YOU FUCKED UP';
 
 function updateFilter(newFilter) {
-  console.log('filtering updates...');
+  if (state.filter === newFilter) {
+    return; // early return so we don't do an update when nothing has changed
+  }
   // using this switch for the different filter states
-  switch (state.filter) {
+  switch (newFilter) {
     // the default branch should never hit, but if we add a filter state
     // and forget to handle that case, it's going to throw
     // not great, but cheap and easy and we can "fix" it later
     default: {
       throw new Error(`You forgot filter state for "${state.filter}`);
     }
-    // order of filter toggle is "all" -> "complete" -> "incomplete"
+    // pass handled update states through to state
     case 'all':
     case 'complete':
     case 'incomplete': {
       state.filter = newFilter;
-      // filterCompleteButton.innerText = 'Show All';
       break;
     }
   }
@@ -104,7 +99,7 @@ window.addEventListener('load', () => {
     DisplayTodos();
   });
 
-  updateFilter(state.filter);
+  updateFilter('all');
   DisplayTodos();
 });
 
