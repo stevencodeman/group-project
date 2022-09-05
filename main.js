@@ -1,6 +1,8 @@
 import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
+import { createTodoElement } from './components/todoItem.js';
+
 /*
     added this to store the data for the running app
     currently, just putting the `filter` value in here
@@ -12,6 +14,22 @@ const state = {
     addMissingTodoId
   ),
 };
+
+function updateTodo(updatedTodo) {
+  state.todos = state.todos.map((todo) =>
+    todo.id === updatedTodo.id ? updatedTodo : todo
+  );
+  localStorage.setItem('todos', JSON.stringify(state.todos));
+
+  DisplayTodos();
+}
+
+function deleteTodo(deletedTodo) {
+  state.todos = state.todos.filter((todo) => todo.id !== deletedTodo.id);
+  localStorage.setItem('todos', JSON.stringify(state.todos));
+
+  DisplayTodos();
+}
 
 // todo functions
 function createTodo(content, category, done = false) {
@@ -55,115 +73,115 @@ function updateFilter(newFilter) {
   DisplayTodos();
 }
 
-// element factories
-function createCheckbox(todo, onCheck) {
-  const input = document.createElement('input');
-  input.type = 'checkbox';
-  input.checked = todo.done;
+// // element factories
+// function createCheckbox(todo, onCheck) {
+//   const input = document.createElement('input');
+//   input.type = 'checkbox';
+//   input.checked = todo.done;
 
-  input.addEventListener('change', (e) => {
-    onCheck(e.target.checked);
-  });
+//   input.addEventListener('change', (e) => {
+//     onCheck(e.target.checked);
+//   });
 
-  const span = document.createElement('span');
-  span.classList.add('bubble');
-  span.classList.add(todo.category === 'other' ? 'other' : 'work');
+//   const span = document.createElement('span');
+//   span.classList.add('bubble');
+//   span.classList.add(todo.category === 'other' ? 'other' : 'work');
 
-  const label = document.createElement('label');
-  label.append(input, span);
+//   const label = document.createElement('label');
+//   label.append(input, span);
 
-  return label;
-}
+//   return label;
+// }
 
-function createTodoContent(todo) {
-  const content = document.createElement('div');
-  content.classList.add('todo-content');
-  content.innerHTML = `<input type="text" value="${todo.content}" readonly />`;
+// function createTodoContent(todo) {
+//   const content = document.createElement('div');
+//   content.classList.add('todo-content');
+//   content.innerHTML = `<input type="text" value="${todo.content}" readonly />`;
 
-  return content;
-}
+//   return content;
+// }
 
-function createTodoActionButtons(todo) {
-  const editButton = document.createElement('button');
-  editButton.classList.add('edit');
-  editButton.innerHTML = 'Edit';
-  editButton.addEventListener('click', (e) => {
-    // const input = content.querySelector('input');
-    const input = document.querySelector(`#${todo.id} > .todo-content > input`);
-    input.removeAttribute('readonly');
-    input.focus();
-    input.addEventListener('blur', (e) => {
-      input.setAttribute('readonly', true);
-      // todo.content = e.target.value;
-      state.todos = state.todos.map((td) =>
-        td.id === todo.id
-          ? {
-              ...todo,
-              content: e.target.value,
-            }
-          : td
-      );
+// function createTodoActionButtons(todo) {
+//   const editButton = document.createElement('button');
+//   editButton.classList.add('edit');
+//   editButton.innerHTML = 'Edit';
+//   editButton.addEventListener('click', (e) => {
+//     // const input = content.querySelector('input');
+//     const input = document.querySelector(`#${todo.id} > .todo-content > input`);
+//     input.removeAttribute('readonly');
+//     input.focus();
+//     input.addEventListener('blur', (e) => {
+//       input.setAttribute('readonly', true);
+//       // todo.content = e.target.value;
+//       state.todos = state.todos.map((td) =>
+//         td.id === todo.id
+//           ? {
+//               ...todo,
+//               content: e.target.value,
+//             }
+//           : td
+//       );
 
-      localStorage.setItem('todos', JSON.stringify(state.todos));
-      DisplayTodos();
-    });
-  });
+//       localStorage.setItem('todos', JSON.stringify(state.todos));
+//       DisplayTodos();
+//     });
+//   });
 
-  const deleteButton = document.createElement('button');
-  deleteButton.classList.add('delete');
-  deleteButton.innerHTML = 'Delete';
-  deleteButton.addEventListener('click', (e) => {
-    // use triple equals
-    state.todos = state.todos.filter((t) => t !== todo);
-    localStorage.setItem('todos', JSON.stringify(state.todos));
-    DisplayTodos();
-  });
+//   const deleteButton = document.createElement('button');
+//   deleteButton.classList.add('delete');
+//   deleteButton.innerHTML = 'Delete';
+//   deleteButton.addEventListener('click', (e) => {
+//     // use triple equals
+//     state.todos = state.todos.filter((t) => t !== todo);
+//     localStorage.setItem('todos', JSON.stringify(state.todos));
+//     DisplayTodos();
+//   });
 
-  const actions = document.createElement('div');
-  actions.classList.add('actions');
-  actions.append(editButton, deleteButton);
+//   const actions = document.createElement('div');
+//   actions.classList.add('actions');
+//   actions.append(editButton, deleteButton);
 
-  return actions;
-}
+//   return actions;
+// }
 
-function createTodoElement(todo) {
-  // returns a fully configured todo list item element
+// function createTodoElement(todo) {
+//   // returns a fully configured todo list item element
 
-  const todoItem = document.createElement('div');
-  todoItem.setAttribute('id', todo.id);
-  todoItem.classList.add(
-    ...['todo-item', todo.done ? 'done' : null].filter(Boolean)
-  );
+//   const todoItem = document.createElement('div');
+//   todoItem.setAttribute('id', todo.id);
+//   todoItem.classList.add(
+//     ...['todo-item', todo.done ? 'done' : null].filter(Boolean)
+//   );
 
-  const checkBubble = createCheckbox(todo, (checked) => {
-    if (checked) {
-      todoItem.classList.add('done');
-    } else {
-      todoItem.classList.remove('done');
-    }
+//   const checkBubble = createCheckbox(todo, (checked) => {
+//     if (checked) {
+//       todoItem.classList.add('done');
+//     } else {
+//       todoItem.classList.remove('done');
+//     }
 
-    state.todos = state.todos.map((td) =>
-      td.id !== todo.id
-        ? td
-        : {
-            ...todo,
-            done: checked,
-          }
-    );
-    // todo.done = e.target.checked;
-    localStorage.setItem('todos', JSON.stringify(state.todos));
+//     state.todos = state.todos.map((td) =>
+//       td.id !== todo.id
+//         ? td
+//         : {
+//             ...todo,
+//             done: checked,
+//           }
+//     );
+//     // todo.done = e.target.checked;
+//     localStorage.setItem('todos', JSON.stringify(state.todos));
 
-    DisplayTodos();
-  });
+//     DisplayTodos();
+//   });
 
-  const content = createTodoContent(todo);
+//   const content = createTodoContent(todo);
 
-  const actions = createTodoActionButtons(todo);
+//   const actions = createTodoActionButtons(todo);
 
-  todoItem.append(checkBubble, content, actions);
+//   todoItem.append(checkBubble, content, actions);
 
-  return todoItem;
-}
+//   return todoItem;
+// }
 
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
@@ -217,7 +235,11 @@ function DisplayTodos() {
 
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
-  todoList.append(...filteredTodos.map((todo) => createTodoElement(todo)));
+  todoList.append(
+    ...filteredTodos.map((todo) =>
+      createTodoElement(todo, updateTodo, deleteTodo)
+    )
+  );
 
   // update filter buttons
   document.querySelectorAll('.filter > button').forEach((button) => {
