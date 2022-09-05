@@ -7,6 +7,9 @@
   --grey: #888;
   --dark: #000000;
   --danger: #070505;
+  --pop: coral; /* yellowgreen; */
+  --brand-color: darkslategrey; /* coral; */
+  --brand-color-fg: white;
 
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
@@ -14,8 +17,9 @@
   --other-glow: 0px 0px 4px rgba(0, 0, 0, 0.75);
 
   --button-bg-color: var(--grey);
-  --button-bg-color-hover: yellowgreen;
-  --button-bg-color-active: coral;
+  --button-bg-color-hover: var(--pop);
+  --button-bg-color-active: var(--brand-color);
+  --button-fg-color-active: var(--brand-color-fg);
 
   scrollbar-gutter: stable;
   scrollbar-width: thin;
@@ -65,6 +69,10 @@ h4 {
   font-size: 0.875rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+}
+
+#name {
+  color: var(--brand-color);
 }
 
 .greeting .title {
@@ -297,6 +305,7 @@ input:checked ~ .bubble::after {
 
 .filter button.active {
   background-color: var(--button-bg-color-active);
+  color: var(--button-fg-color-active);
 }
 
 @media only screen and (min-width: 600px) {

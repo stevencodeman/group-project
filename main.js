@@ -12,6 +12,8 @@ const initialState = JSON.parse(localStorage.getItem('todos-app-state')) || {
 
 const store = createStore(stateReducer, initialState);
 
+initApp(store.getState(), store.dispatch);
+
 store.subscribe(update);
 
 function stateReducer(state, action) {
@@ -54,32 +56,36 @@ function update(state) {
   DisplayTodos(state);
 }
 
-// todo functions
-function createTodo(content, category, done = false) {
-  return {
-    id: nanoid(),
-    content,
-    category,
-    done,
-    createdAt: new Date().getTime(),
-  };
-}
+function initApp(state, dispatch) {
+  const nameInput = document.getElementById('name');
+  // nameInput.value = state.username;
+  nameInput.addEventListener('change', (e) => {
+    const username = e.target.value;
+    dispatch({ type: 'UPDATE_USERNAME', payload: username });
+  });
 
-// filters
-const todoFilters = {
-  all: (todo) => todo,
-  complete: (todo) => todo.done,
-  incomplete: (todo) => !todo.done,
-};
+  const newTodoForm = document.getElementById('new-todo-form');
+  newTodoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const { content, category } = form.elements;
 
-window.addEventListener('load', () => {
-  const nameInput = document.querySelector('#name');
-  const newTodoForm = document.querySelector('#new-todo-form');
+    const newTodo = {
+      id: nanoid(),
+      content,
+      category,
+      done,
+      createdAt: new Date().getTime(),
+    };
 
-  // filter toggle buttons
+    // Reset the form
+    form.reset();
+
+    dispatch({ type: 'ADD_TODO', payload: newTodo });
+  });
+
   const filterButtons = document.querySelectorAll('.filter > button');
 
-  // on click for the filter buttons
   filterButtons.forEach((button) => {
     const nextFilter = button.getAttribute('data-filter');
     button.addEventListener('click', (e) => {
@@ -88,33 +94,23 @@ window.addEventListener('load', () => {
     });
   });
 
-  nameInput.value = store.getState().username;
-
-  nameInput.addEventListener('change', (e) => {
-    const username = e.target.value;
-    // state.username = username;
-    store.dispatch({ type: 'UPDATE_USERNAME', payload: username });
-    localStorage.setItem('username', username);
-  });
-
-  newTodoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const { content, category } = form.elements;
-
-    const newTodo = createTodo(content.value, category.value);
-
-    // Reset the form
-    form.reset();
-
-    store.dispatch({ type: 'ADD_TODO', payload: newTodo });
-  });
-
-  store.dispatch({ type: 'UPDATE_FILTER', payload: 'all' });
-});
+  DisplayTodos(state);
+}
 
 function DisplayTodos(state) {
-  const filteredTodos = state.todos.filter(todoFilters[state.filter]);
+  const nameInput = document.getElementById('name');
+  nameInput.value = state.username;
+
+  const filteredTodos = state.todos.filter((todo) => {
+    switch (state.filter) {
+      default:
+        return true;
+      case 'complete':
+        return todo.done;
+      case 'incomplete':
+        return !todo.done;
+    }
+  });
 
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
