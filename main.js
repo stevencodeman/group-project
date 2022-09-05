@@ -7,7 +7,7 @@ import { createTodoElement } from './components/todoItem.js';
     added this to store the data for the running app
     currently, just putting the `filter` value in here
 */
-const state = {
+let state = {
   username: localStorage.getItem('username') || '',
   filter: null,
   todos: (JSON.parse(localStorage.getItem('todos')) || []).map(
@@ -15,20 +15,32 @@ const state = {
   ),
 };
 
-function updateTodo(updatedTodo) {
-  state.todos = state.todos.map((todo) =>
-    todo.id === updatedTodo.id ? updatedTodo : todo
-  );
-  localStorage.setItem('todos', JSON.stringify(state.todos));
+function updateState(action) {
+  const { type, payload } = action;
+  let nextState = state;
+  switch (type) {
+    case 'UPDATE_TODO':
+      nextState = {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === payload.id ? payload : todo
+        ),
+      };
+      break;
+    case 'DELETE_TODO':
+      console.log('deleting todo:', payload.id);
+      nextState = {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== payload.id),
+      };
+      break;
+  }
 
-  DisplayTodos();
-}
-
-function deleteTodo(deletedTodo) {
-  state.todos = state.todos.filter((todo) => todo.id !== deletedTodo.id);
-  localStorage.setItem('todos', JSON.stringify(state.todos));
-
-  DisplayTodos();
+  if (nextState !== state) {
+    state = nextState;
+    localStorage.setItem('todos', JSON.stringify(state.todos));
+    DisplayTodos(state.todos);
+  }
 }
 
 // todo functions
@@ -70,118 +82,8 @@ function updateFilter(newFilter) {
 
   state.filter = newFilter;
   // call `displayTodos` to update the view on page
-  DisplayTodos();
+  DisplayTodos(state.todos);
 }
-
-// // element factories
-// function createCheckbox(todo, onCheck) {
-//   const input = document.createElement('input');
-//   input.type = 'checkbox';
-//   input.checked = todo.done;
-
-//   input.addEventListener('change', (e) => {
-//     onCheck(e.target.checked);
-//   });
-
-//   const span = document.createElement('span');
-//   span.classList.add('bubble');
-//   span.classList.add(todo.category === 'other' ? 'other' : 'work');
-
-//   const label = document.createElement('label');
-//   label.append(input, span);
-
-//   return label;
-// }
-
-// function createTodoContent(todo) {
-//   const content = document.createElement('div');
-//   content.classList.add('todo-content');
-//   content.innerHTML = `<input type="text" value="${todo.content}" readonly />`;
-
-//   return content;
-// }
-
-// function createTodoActionButtons(todo) {
-//   const editButton = document.createElement('button');
-//   editButton.classList.add('edit');
-//   editButton.innerHTML = 'Edit';
-//   editButton.addEventListener('click', (e) => {
-//     // const input = content.querySelector('input');
-//     const input = document.querySelector(`#${todo.id} > .todo-content > input`);
-//     input.removeAttribute('readonly');
-//     input.focus();
-//     input.addEventListener('blur', (e) => {
-//       input.setAttribute('readonly', true);
-//       // todo.content = e.target.value;
-//       state.todos = state.todos.map((td) =>
-//         td.id === todo.id
-//           ? {
-//               ...todo,
-//               content: e.target.value,
-//             }
-//           : td
-//       );
-
-//       localStorage.setItem('todos', JSON.stringify(state.todos));
-//       DisplayTodos();
-//     });
-//   });
-
-//   const deleteButton = document.createElement('button');
-//   deleteButton.classList.add('delete');
-//   deleteButton.innerHTML = 'Delete';
-//   deleteButton.addEventListener('click', (e) => {
-//     // use triple equals
-//     state.todos = state.todos.filter((t) => t !== todo);
-//     localStorage.setItem('todos', JSON.stringify(state.todos));
-//     DisplayTodos();
-//   });
-
-//   const actions = document.createElement('div');
-//   actions.classList.add('actions');
-//   actions.append(editButton, deleteButton);
-
-//   return actions;
-// }
-
-// function createTodoElement(todo) {
-//   // returns a fully configured todo list item element
-
-//   const todoItem = document.createElement('div');
-//   todoItem.setAttribute('id', todo.id);
-//   todoItem.classList.add(
-//     ...['todo-item', todo.done ? 'done' : null].filter(Boolean)
-//   );
-
-//   const checkBubble = createCheckbox(todo, (checked) => {
-//     if (checked) {
-//       todoItem.classList.add('done');
-//     } else {
-//       todoItem.classList.remove('done');
-//     }
-
-//     state.todos = state.todos.map((td) =>
-//       td.id !== todo.id
-//         ? td
-//         : {
-//             ...todo,
-//             done: checked,
-//           }
-//     );
-//     // todo.done = e.target.checked;
-//     localStorage.setItem('todos', JSON.stringify(state.todos));
-
-//     DisplayTodos();
-//   });
-
-//   const content = createTodoContent(todo);
-
-//   const actions = createTodoActionButtons(todo);
-
-//   todoItem.append(checkBubble, content, actions);
-
-//   return todoItem;
-// }
 
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
@@ -222,22 +124,34 @@ window.addEventListener('load', () => {
     // Reset the form
     form.reset();
 
-    DisplayTodos();
+    DisplayTodos(state.todos);
   });
 
   updateFilter('all');
-  DisplayTodos();
+  DisplayTodos(state.todos);
 });
 
-function DisplayTodos() {
+function DisplayTodos(todos) {
   // filter the todos by `done` property
-  const filteredTodos = state.todos.filter(todoFilters[state.filter]);
+  const filteredTodos = todos.filter(todoFilters[state.filter]);
 
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
   todoList.append(
     ...filteredTodos.map((todo) =>
-      createTodoElement(todo, updateTodo, deleteTodo)
+      createTodoElement(
+        todo,
+        (updatedTodo) =>
+          updateState({
+            type: 'UPDATE_TODO',
+            payload: updatedTodo,
+          }),
+        (deletedTodo) =>
+          updateState({
+            type: 'DELETE_TODO',
+            payload: deletedTodo,
+          })
+      )
     )
   );
 
