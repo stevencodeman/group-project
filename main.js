@@ -1,4 +1,4 @@
-let todos = JSON.parse(localStorage.getItem('todos')) || [];
+import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
 /*
     added this to store the data for the running app
@@ -7,17 +7,39 @@ let todos = JSON.parse(localStorage.getItem('todos')) || [];
 const state = {
   username: localStorage.getItem('username') || '',
   filter: null,
+  todos: (JSON.parse(localStorage.getItem('todos')) || []).map(
+    addMissingIdToTodo
+  ),
 };
 
+// todo functions
+function createTodo(content, category, done = false) {
+  return {
+    id: Uuid(),
+    content,
+    category,
+    done,
+    createdAt: new Date().getTime(),
+  };
+}
+
+function addMissingIdToTodo(todo) {
+  if (todo.id) {
+    return todo;
+  } else {
+    return {
+      id: Uuid(),
+      ...todo,
+    };
+  }
+}
+
 // filters
-const filters = {
+const todoFilters = {
   all: (todo) => todo,
   complete: (todo) => todo.done,
   incomplete: (todo) => !todo.done,
 };
-
-const filterToButtonText = (filter) =>
-  filterButtonText[filter] ?? 'YOU FUCKED UP';
 
 function updateFilter(newFilter) {
   if (state.filter === newFilter) {
@@ -25,7 +47,7 @@ function updateFilter(newFilter) {
     return;
   }
 
-  if (!filters[newFilter]) {
+  if (!todoFilters[newFilter]) {
     throw new Error(
       `Oops, you forgot to add a filter handler for ${newFilter}`
     );
@@ -46,14 +68,11 @@ window.addEventListener('load', () => {
   // on click for the filter buttons
   filterButtons.forEach((button) => {
     const nextFilter = button.getAttribute('data-filter');
-    // console.log('nextFilter', nextFilter);
     button.addEventListener('click', (e) => {
       e.preventDefault();
       updateFilter(nextFilter);
     });
   });
-
-  // const username = localStorage.getItem('username') || '';
 
   nameInput.value = state.username;
 
@@ -65,20 +84,18 @@ window.addEventListener('load', () => {
 
   newTodoForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const form = e.target;
+    const { content, category } = form.elements;
 
-    const todo = {
-      content: e.target.elements.content.value,
-      category: e.target.elements.category.value,
-      done: false,
-      createdAt: new Date().getTime(),
-    };
+    const newTodo = createTodo(content.value, category.value);
 
-    todos.push(todo);
+    // todos.push(todo);
+    state.todos = [...state.todos, newTodo];
 
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem('todos', JSON.stringify(state.todos));
 
     // Reset the form
-    e.target.reset();
+    form.reset();
 
     DisplayTodos();
   });
@@ -92,7 +109,7 @@ function DisplayTodos() {
   todoList.innerHTML = '';
 
   // filter the todos by `done` property
-  const filteredTodos = todos.filter(filters[state.filter]);
+  const filteredTodos = state.todos.filter(todoFilters[state.filter]);
 
   // update filter buttons
   document.querySelectorAll('.filter > button').forEach((button) => {
@@ -144,8 +161,16 @@ function DisplayTodos() {
     }
 
     input.addEventListener('change', (e) => {
-      todo.done = e.target.checked;
-      localStorage.setItem('todos', JSON.stringify(todos));
+      state.todos = state.todos.map((td) =>
+        td.id !== todo.id
+          ? td
+          : {
+              ...todo,
+              done: e.target.checked,
+            }
+      );
+      // todo.done = e.target.checked;
+      localStorage.setItem('todos', JSON.stringify(state.todos));
 
       if (todo.done) {
         todoItem.classList.add('done');
@@ -162,16 +187,25 @@ function DisplayTodos() {
       input.focus();
       input.addEventListener('blur', (e) => {
         input.setAttribute('readonly', true);
-        todo.content = e.target.value;
-        localStorage.setItem('todos', JSON.stringify(todos));
+        // todo.content = e.target.value;
+        state.todos = state.todos.map((td) =>
+          td.id === todo.id
+            ? {
+                ...todo,
+                content: e.target.value,
+              }
+            : td
+        );
+
+        localStorage.setItem('todos', JSON.stringify(state.todos));
         DisplayTodos();
       });
     });
 
     deleteButton.addEventListener('click', (e) => {
       // use triple equals
-      todos = todos.filter((t) => t !== todo);
-      localStorage.setItem('todos', JSON.stringify(todos));
+      state.todos = state.todos.filter((t) => t !== todo);
+      localStorage.setItem('todos', JSON.stringify(state.todos));
       DisplayTodos();
     });
   });
