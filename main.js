@@ -2,16 +2,12 @@ import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 // import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
 import { createTodoElement } from './components/todoItem.js';
-import { createStore } from './store/index.js';
+import { createStore } from './lib/store.js';
 
-/*
-    added this to store the data for the running app
-    currently, just putting the `filter` value in here
-*/
-const initialState = {
-  username: localStorage.getItem('username') || '',
-  filter: null,
-  todos: JSON.parse(localStorage.getItem('todos')) || [],
+const initialState = JSON.parse(localStorage.getItem('todos-app-state')) || {
+  username: '',
+  filter: 'all',
+  todos: [],
 };
 
 const store = createStore(stateReducer, initialState);
@@ -54,7 +50,7 @@ function stateReducer(state, action) {
 }
 
 function update(state) {
-  localStorage.setItem('todos', JSON.stringify(state.todos));
+  localStorage.setItem('todos-app-state', JSON.stringify(state));
   DisplayTodos(state);
 }
 
