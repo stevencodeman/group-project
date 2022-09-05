@@ -25,9 +25,9 @@ export function createTodoElement(todo, onUpdate, onDelete) {
   const actions = createTodoActionButtons(
     todo,
     () => {
-      const input = content.querySelector('input');
-      input.removeAttribute('readonly');
-      input.focus();
+      // const input = content.querySelector('input');
+      content.removeAttribute('readonly');
+      content.focus();
     },
     onDelete
   );
@@ -58,7 +58,9 @@ function createCheckbox(todo, onCheck) {
 }
 
 function createTodoContent(todo, onUpdate) {
+  // console.log('createTodoContent', todo.content);
   const input = document.createElement('input');
+  input.classList.add('todo-content');
   input.type = 'text';
   input.value = todo.content;
   input.readOnly = true;
@@ -69,10 +71,11 @@ function createTodoContent(todo, onUpdate) {
     });
   });
 
-  const content = document.createElement('div');
-  content.classList.add('todo-content');
-  content.append(input);
-  return content;
+  // const content = document.createElement('div');
+  // content.classList.add('todo-content');
+  // content.append(input);
+  // return content;
+  return input;
 }
 
 function createTodoActionButtons(todo, onEdit, onDelete) {

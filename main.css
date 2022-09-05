@@ -199,6 +199,7 @@ input:checked ~ .bubble::after {
 .todo-list .todo-item {
   display: flex;
   align-items: center;
+  gap: 1rem;
   background-color: #fff;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -213,10 +214,8 @@ input:checked ~ .bubble::after {
 }
 
 .todo-item .todo-content {
-  flex: 1 1 0%;
-}
-
-.todo-item .todo-content input {
+  width: 100%;
+  flex: 1;
   color: var(--dark);
   font-size: 1.125rem;
 }

@@ -72,9 +72,9 @@ function initApp(state, dispatch) {
 
     const newTodo = {
       id: nanoid(),
-      content,
-      category,
-      done,
+      content: content.value,
+      category: category.value,
+      done: false,
       createdAt: new Date().getTime(),
     };
 
@@ -112,25 +112,27 @@ function DisplayTodos(state) {
     }
   });
 
+  const todoListChildren = !filteredTodos.length
+    ? ['nothing to see here, brud']
+    : filteredTodos.map((todo) =>
+        createTodoElement(
+          todo,
+          (updatedTodo) =>
+            store.dispatch({
+              type: 'UPDATE_TODO',
+              payload: updatedTodo,
+            }),
+          (deletedTodo) =>
+            store.dispatch({
+              type: 'DELETE_TODO',
+              payload: deletedTodo,
+            })
+        )
+      );
+
   const todoList = document.querySelector('#todo-list');
-  todoList.innerHTML = '';
-  todoList.append(
-    ...filteredTodos.map((todo) =>
-      createTodoElement(
-        todo,
-        (updatedTodo) =>
-          store.dispatch({
-            type: 'UPDATE_TODO',
-            payload: updatedTodo,
-          }),
-        (deletedTodo) =>
-          store.dispatch({
-            type: 'DELETE_TODO',
-            payload: deletedTodo,
-          })
-      )
-    )
-  );
+  todoList.innerText = '';
+  todoList.append(...todoListChildren);
 
   // update filter buttons
   document.querySelectorAll('.filter > button').forEach((button) => {
