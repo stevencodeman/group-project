@@ -14,3 +14,4 @@
 - Add confirmation modal for deleting todos
 - Add more todo categories/custom categories
 - Todo sorting/grouping functionalities
+- Convert CSS colors to rgb variables(???)

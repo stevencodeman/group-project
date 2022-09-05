@@ -58,7 +58,6 @@ function createCheckbox(todo, onCheck) {
 }
 
 function createTodoContent(todo, onUpdate) {
-  // console.log('createTodoContent', todo.content);
   const input = document.createElement('input');
   input.classList.add('todo-content');
   input.type = 'text';
