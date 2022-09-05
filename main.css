@@ -264,6 +264,7 @@ input:checked ~ .bubble::after {
 
 .filter button {
   border-radius: 0;
+  cursor: pointer;
 }
 
 .filter button span.text {
@@ -282,10 +283,11 @@ input:checked ~ .bubble::after {
   border-radius: 0 0.5em 0.5em 0;
 }
 
+.filter button.active:hover,
 .filter button:hover {
   background-color: var(--button-bg-color-hover);
   color: white;
-  cursor: pointer;
+  transition: background-color 250ms;
 }
 
 .filter button:active {

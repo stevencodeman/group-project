@@ -1,5 +1,5 @@
 import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
-import { v4 as Uuid } from 'https://jspm.dev/uuid';
+// import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
 import { createTodoElement } from './components/todoItem.js';
 
@@ -54,6 +54,8 @@ function createTodo(content, category, done = false) {
   };
 }
 
+// probably don't need this function, but i was using it for transitioning
+// between todo id formats (none -> uuid -> nanoid)
 function addMissingTodoId(todo) {
   return {
     ...todo,
