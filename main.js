@@ -8,6 +8,22 @@ const state = {
   filter: 'all',
 };
 
+// filters
+const filters = {
+  all: (todo) => todo,
+  complete: (todo) => todo.done,
+  incomplete: (todo) => !todo.done,
+};
+
+const filterButtonText = {
+  all: 'Complete',
+  complete: 'Incomplete',
+  incomplete: 'All',
+};
+
+const filterToButtonText = (filter) =>
+  filterButtonText[filter] ?? 'YOU FUCKED UP';
+
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
   const newTodoForm = document.querySelector('#new-todo-form');
@@ -44,7 +60,7 @@ window.addEventListener('load', () => {
     }
 
     // call `displayTodos` to update the view on page
-    displayTodos();
+    DisplayTodos();
   });
 
   const username = localStorage.getItem('username') || '';
@@ -72,13 +88,13 @@ window.addEventListener('load', () => {
     // Reset the form
     e.target.reset();
 
-    displayTodos();
+    DisplayTodos();
   });
 
-  displayTodos();
+  DisplayTodos();
 });
 
-function displayTodos() {
+function DisplayTodos() {
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
 
@@ -150,7 +166,7 @@ function displayTodos() {
         todoItem.classList.remove('done');
       }
 
-      displayTodos();
+      DisplayTodos();
     });
 
     edit.addEventListener('click', (e) => {
@@ -161,7 +177,7 @@ function displayTodos() {
         input.setAttribute('readonly', true);
         todo.content = e.target.value;
         localStorage.setItem('todos', JSON.stringify(todos));
-        displayTodos();
+        DisplayTodos();
       });
     });
 
@@ -169,7 +185,7 @@ function displayTodos() {
       // use triple equals
       todos = todos.filter((t) => t !== todo);
       localStorage.setItem('todos', JSON.stringify(todos));
-      displayTodos();
+      DisplayTodos();
     });
   });
 }
