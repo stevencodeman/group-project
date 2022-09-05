@@ -7,7 +7,7 @@ export function createStore(reducer, initialState) {
   state = initialState;
 
   return {
-    dispatch: (action) => {
+    dispatch: (action = {}) => {
       const nextState = reducer(state, action);
 
       if (state !== nextState) {

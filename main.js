@@ -21,6 +21,13 @@ store.subscribe(update);
 function stateReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
+    default:
+      return state;
+    case 'UPDATE_USERNAME':
+      return {
+        ...state,
+        username: payload,
+      };
     case 'UPDATE_FILTER':
       return {
         ...state,
@@ -89,7 +96,8 @@ window.addEventListener('load', () => {
 
   nameInput.addEventListener('change', (e) => {
     const username = e.target.value;
-    state.username = username;
+    // state.username = username;
+    store.dispatch({ type: 'UPDATE_USERNAME', payload: username });
     localStorage.setItem('username', username);
   });
 
