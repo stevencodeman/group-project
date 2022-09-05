@@ -12,6 +12,9 @@
 
   --work-glow: 0px 0px 4px rgba(37, 114, 229, 0.75);
   --other-glow: 0px 0px 4px rgba(0, 0, 0, 0.75);
+
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
 }
 /* End of Variables */
 
@@ -31,6 +34,7 @@ button {
   background: none;
   cursor: initial;
 }
+
 /* End of Resets */
 
 body {
@@ -238,26 +242,50 @@ input:checked ~ .bubble::after {
 }
 
 /* -- Timothy added this stuff */
-.heading {
+.list-heading {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.heading nav button {
+.filter button {
   border: 1px solid black;
   border-radius: 0.5em;
   padding: 0.5em;
-  width: 16ch;
+  width: 12ch;
 }
 
-.heading nav button:hover {
+.filter {
+  display: flex;
+}
+
+.filter button {
+  border-radius: 0;
+}
+
+.filter button + button {
+  border-left: 0;
+}
+
+.filter button:first-child {
+  border-radius: 0.5em 0 0 0.5em;
+}
+
+.filter button:last-child {
+  border-radius: 0 0.5em 0.5em 0;
+}
+
+.filter button:hover {
   background-color: yellowgreen;
   color: white;
   cursor: pointer;
 }
 
-.heading nav button:active {
+.filter button:active {
   background-color: black;
   color: white;
+}
+
+.filter button.active {
+  background-color: coral;
 }

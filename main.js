@@ -5,6 +5,7 @@ let todos = JSON.parse(localStorage.getItem('todos')) || [];
     currently, just putting the `filter` value in here
 */
 const state = {
+  username: localStorage.getItem('username') || '',
   filter: 'all',
 };
 
@@ -24,51 +25,63 @@ const filterButtonText = {
 const filterToButtonText = (filter) =>
   filterButtonText[filter] ?? 'YOU FUCKED UP';
 
+function updateFilter(newFilter) {
+  console.log('filtering updates...');
+  // using this switch for the different filter states
+  switch (state.filter) {
+    // the default branch should never hit, but if we add a filter state
+    // and forget to handle that case, it's going to throw
+    // not great, but cheap and easy and we can "fix" it later
+    default: {
+      throw new Error(`You forgot filter state for "${state.filter}`);
+    }
+    // order of filter toggle is "all" -> "complete" -> "incomplete"
+    case 'all':
+    case 'complete':
+    case 'incomplete': {
+      state.filter = newFilter;
+      // filterCompleteButton.innerText = 'Show All';
+      break;
+    }
+  }
+
+  document.querySelectorAll('.filter > button').forEach((button) => {
+    if (button.getAttribute('data-filter') === newFilter) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
+    }
+  });
+
+  // call `displayTodos` to update the view on page
+  DisplayTodos();
+}
+
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
   const newTodoForm = document.querySelector('#new-todo-form');
 
-  // filter toggle button
-  const filterCompleteButton = document.getElementById('filterComplete');
+  // filter toggle buttons
+  const filterButtons = document.querySelectorAll('.filter > button');
 
-  // on click for the button
-  filterCompleteButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    // using this switch for the different filter states
-    switch (state.filter) {
-      // the default branch should never hit, but if we add a filter state
-      // and forget to handle that case, it's going to throw
-      // not great, but cheap and easy and we can "fix" it later
-      default: {
-        throw new Error(`You forgot filter state for "${state.filter}`);
-      }
-      // order of filter toggle is "all" -> "complete" -> "incomplete"
-      case 'all': {
-        state.filter = 'complete';
-        filterCompleteButton.innerText = 'Show Incomplete';
-        break; // breaks out of the `switch` statement without fall through
-      }
-      case 'complete': {
-        state.filter = 'incomplete';
-        break;
-      }
-      case 'incomplete': {
-        state.filter = 'all';
-        break;
-      }
-    }
-
-    // call `displayTodos` to update the view on page
-    DisplayTodos();
+  // on click for the filter buttons
+  filterButtons.forEach((button) => {
+    const nextFilter = button.getAttribute('data-filter');
+    // console.log('nextFilter', nextFilter);
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      updateFilter(nextFilter);
+    });
   });
 
-  const username = localStorage.getItem('username') || '';
+  // const username = localStorage.getItem('username') || '';
 
-  nameInput.value = username;
+  nameInput.value = state.username;
 
   nameInput.addEventListener('change', (e) => {
-    localStorage.setItem('username', e.target.value);
+    const username = e.target.value;
+    state.username = username;
+    localStorage.setItem('username', username);
   });
 
   newTodoForm.addEventListener('submit', (e) => {
@@ -91,6 +104,7 @@ window.addEventListener('load', () => {
     DisplayTodos();
   });
 
+  updateFilter(state.filter);
   DisplayTodos();
 });
 
@@ -142,13 +156,9 @@ function DisplayTodos() {
     edit.innerHTML = 'Edit';
     deleteButton.innerHTML = 'Delete';
 
-    label.appendChild(input);
-    label.appendChild(span);
-    actions.appendChild(edit);
-    actions.appendChild(deleteButton);
-    todoItem.appendChild(label);
-    todoItem.appendChild(content);
-    todoItem.appendChild(actions);
+    label.append(input, span);
+    actions.append(edit, deleteButton);
+    todoItem.append(label, content, actions);
 
     todoList.appendChild(todoItem);
 

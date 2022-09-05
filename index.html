@@ -32,6 +32,7 @@
             placeholder="e.g. Take a Nap"
             name="content"
             id="content"
+            required
           />
 
           <h4>Pick a category</h4>
@@ -57,9 +58,13 @@
       </section>
 
       <section class="todo-list">
-        <div class="heading">
+        <div class="list-heading">
           <h3>TODO LIST</h3>
-          <nav><button id="filterComplete">Show Complete</button></nav>
+          <nav class="filter">
+            <button data-filter="all">All</button>
+            <button data-filter="incomplete">Incomplete</button>
+            <button data-filter="complete">Complete</button>
+          </nav>
         </div>
         <div class="list" id="todo-list"></div>
         <!--
