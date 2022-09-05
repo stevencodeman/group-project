@@ -1,3 +1,4 @@
+import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
 /*
@@ -24,14 +25,10 @@ function createTodo(content, category, done = false) {
 }
 
 function addMissingIdToTodo(todo) {
-  if (todo.id) {
-    return todo;
-  } else {
-    return {
-      id: Uuid(),
-      ...todo,
-    };
-  }
+  return {
+    ...todo,
+    id: !!todo.id?.match(/^[A-Za-z0-9_]{21,21}$/) ? todo.id : nanoid(),
+  };
 }
 
 // filters
