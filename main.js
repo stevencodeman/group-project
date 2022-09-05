@@ -21,33 +21,17 @@ const filterToButtonText = (filter) =>
 
 function updateFilter(newFilter) {
   if (state.filter === newFilter) {
-    return; // early return so we don't do an update when nothing has changed
-  }
-  // using this switch for the different filter states
-  switch (newFilter) {
-    // the default branch should never hit, but if we add a filter state
-    // and forget to handle that case, it's going to throw
-    // not great, but cheap and easy and we can "fix" it later
-    default: {
-      throw new Error(`You forgot filter state for "${state.filter}`);
-    }
-    // pass handled update states through to state
-    case 'all':
-    case 'complete':
-    case 'incomplete': {
-      state.filter = newFilter;
-      break;
-    }
+    // early return so we don't do an update when nothing has changed
+    return;
   }
 
-  document.querySelectorAll('.filter > button').forEach((button) => {
-    if (button.getAttribute('data-filter') === newFilter) {
-      button.classList.add('active');
-    } else {
-      button.classList.remove('active');
-    }
-  });
+  if (!filters[newFilter]) {
+    throw new Error(
+      `Oops, you forgot to add a filter handler for ${newFilter}`
+    );
+  }
 
+  state.filter = newFilter;
   // call `displayTodos` to update the view on page
   DisplayTodos();
 }
@@ -108,16 +92,14 @@ function DisplayTodos() {
   todoList.innerHTML = '';
 
   // filter the todos by `done` property
-  const filteredTodos = todos.filter((todo) => {
-    switch (state.filter) {
-      default:
-        throw new Error(`You forgot to handle filter "${state.filter}"`);
-      case 'all': // always return true because we're keeping all
-        return true;
-      case 'complete': // keep if the `done` prop is `true`
-        return todo.done;
-      case 'incomplete': // opposite of "complete"
-        return !todo.done;
+  const filteredTodos = todos.filter(filters[state.filter]);
+
+  // update filter buttons
+  document.querySelectorAll('.filter > button').forEach((button) => {
+    if (button.getAttribute('data-filter') === state.filter) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
     }
   });
 
