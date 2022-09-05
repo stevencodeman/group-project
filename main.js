@@ -2,64 +2,63 @@ import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 // import { v4 as Uuid } from 'https://jspm.dev/uuid';
 
 import { createTodoElement } from './components/todoItem.js';
+import { createStore } from './store/index.js';
 
 /*
     added this to store the data for the running app
     currently, just putting the `filter` value in here
 */
-let state = {
+const initialState = {
   username: localStorage.getItem('username') || '',
   filter: null,
-  todos: (JSON.parse(localStorage.getItem('todos')) || []).map(
-    addMissingTodoId
-  ),
+  todos: JSON.parse(localStorage.getItem('todos')) || [],
 };
 
-function updateState(action) {
+const store = createStore(stateReducer, initialState);
+
+store.subscribe(update);
+
+function stateReducer(state, action) {
   const { type, payload } = action;
-  let nextState = state;
   switch (type) {
+    case 'UPDATE_FILTER':
+      return {
+        ...state,
+        filter: payload,
+      };
+    case 'ADD_TODO':
+      return {
+        ...state,
+        todos: [...state.todos, payload],
+      };
     case 'UPDATE_TODO':
-      nextState = {
+      return {
         ...state,
         todos: state.todos.map((todo) =>
           todo.id === payload.id ? payload : todo
         ),
       };
-      break;
     case 'DELETE_TODO':
-      console.log('deleting todo:', payload.id);
-      nextState = {
+      return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== payload.id),
       };
-      break;
   }
+}
 
-  if (nextState !== state) {
-    state = nextState;
-    localStorage.setItem('todos', JSON.stringify(state.todos));
-    DisplayTodos(state.todos);
-  }
+function update(state) {
+  localStorage.setItem('todos', JSON.stringify(state.todos));
+  DisplayTodos(state);
 }
 
 // todo functions
 function createTodo(content, category, done = false) {
   return {
-    id: Uuid(),
+    id: nanoid(),
     content,
     category,
     done,
     createdAt: new Date().getTime(),
-  };
-}
-
-// probably don't need this function, but i was using it for transitioning
-// between todo id formats (none -> uuid -> nanoid)
-function addMissingTodoId(todo) {
-  return {
-    ...todo,
-    id: !!todo.id?.match(/^[A-Za-z0-9_]{21,21}$/) ? todo.id : nanoid(),
   };
 }
 
@@ -69,23 +68,6 @@ const todoFilters = {
   complete: (todo) => todo.done,
   incomplete: (todo) => !todo.done,
 };
-
-function updateFilter(newFilter) {
-  if (state.filter === newFilter) {
-    // early return so we don't do an update when nothing has changed
-    return;
-  }
-
-  if (!todoFilters[newFilter]) {
-    throw new Error(
-      `Oops, you forgot to add a filter handler for ${newFilter}`
-    );
-  }
-
-  state.filter = newFilter;
-  // call `displayTodos` to update the view on page
-  DisplayTodos(state.todos);
-}
 
 window.addEventListener('load', () => {
   const nameInput = document.querySelector('#name');
@@ -99,11 +81,11 @@ window.addEventListener('load', () => {
     const nextFilter = button.getAttribute('data-filter');
     button.addEventListener('click', (e) => {
       e.preventDefault();
-      updateFilter(nextFilter);
+      store.dispatch({ type: 'UPDATE_FILTER', payload: nextFilter });
     });
   });
 
-  nameInput.value = state.username;
+  nameInput.value = store.getState().username;
 
   nameInput.addEventListener('change', (e) => {
     const username = e.target.value;
@@ -118,24 +100,17 @@ window.addEventListener('load', () => {
 
     const newTodo = createTodo(content.value, category.value);
 
-    // todos.push(todo);
-    state.todos = [...state.todos, newTodo];
-
-    localStorage.setItem('todos', JSON.stringify(state.todos));
-
     // Reset the form
     form.reset();
 
-    DisplayTodos(state.todos);
+    store.dispatch({ type: 'ADD_TODO', payload: newTodo });
   });
 
-  updateFilter('all');
-  DisplayTodos(state.todos);
+  store.dispatch({ type: 'UPDATE_FILTER', payload: 'all' });
 });
 
-function DisplayTodos(todos) {
-  // filter the todos by `done` property
-  const filteredTodos = todos.filter(todoFilters[state.filter]);
+function DisplayTodos(state) {
+  const filteredTodos = state.todos.filter(todoFilters[state.filter]);
 
   const todoList = document.querySelector('#todo-list');
   todoList.innerHTML = '';
@@ -144,12 +119,12 @@ function DisplayTodos(todos) {
       createTodoElement(
         todo,
         (updatedTodo) =>
-          updateState({
+          store.dispatch({
             type: 'UPDATE_TODO',
             payload: updatedTodo,
           }),
         (deletedTodo) =>
-          updateState({
+          store.dispatch({
             type: 'DELETE_TODO',
             payload: deletedTodo,
           })
