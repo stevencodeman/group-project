@@ -23,7 +23,7 @@
     <script src="main.js" type="module"></script>
   </head>
   <body>
-    <main class="app">
+    <main id="app">
       <section class="greeting">
         <h2 class="title">
           Hello, <input type="text" id="name" placeholder="Name here" />
@@ -33,7 +33,7 @@
       <section class="create-todo">
         <h3>CREATE A TODO</h3>
         <form id="new-todo-form">
-          <h4>What's on your todo list?</h4>
+          <label class="h4" for="content">What's on your todo list?</label>
           <input
             type="text"
             placeholder="e.g. Take a Nap"
@@ -41,6 +41,13 @@
             id="content"
             required
           />
+
+          <label class="h4" for="description">Description</label>
+          <textarea
+            placeholder="Notes and etc."
+            name="description"
+            id="description"
+          ></textarea>
 
           <h4>Pick a category</h4>
           <div class="options">
