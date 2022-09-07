@@ -10,6 +10,14 @@ const initialState = JSON.parse(localStorage.getItem('todos-app-state')) || {
   todos: [],
 };
 
+const exTodo = {
+  id: 'string',
+  title: 'string',
+  category: 'work | other',
+  done: 'boolean',
+  createAt: 'number',
+};
+
 const store = createStore(stateReducer, initialState);
 
 initApp(store.getState(), store.dispatch);
