@@ -13,8 +13,18 @@
 
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-  --work-glow: 0px 0px 4px rgba(37, 114, 229, 0.75);
-  --other-glow: 0px 0px 4px rgba(0, 0, 0, 0.75);
+  --work-color-rgb: 37 114 229;
+  --bubble-color-rgb: 0 0 0;
+
+  --bubble-size: 20px;
+  --bubble-border-size: calc(var(--bubble-size) * 0.1);
+  --bubble-glow-size: calc(var(--bubble-size) * 0.3);
+  --bubble-glow-opacity: 0.75;
+
+  --work-glow: 0px 0px var(--bubble-glow-size)
+    rgba(var(--work-color-rgb) / var(--bubble-glow-opacity));
+  --other-glow: 0px 0px var(--bubble-glow-size)
+    rgba(var(--bubble-color-rgb) / var(--bubble-glow-opacity));
 
   --button-bg-color: var(--grey);
   --button-bg-color-hover: var(--pop);
@@ -27,11 +37,19 @@
 /* End of Variables */
 
 /* Resets */
-* {
+html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'montserrat', sans-serif;
+}
+
+html *,
+html *::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 input:not([type='radio']):not([type='checkbox']),
@@ -53,7 +71,8 @@ button {
   flex-direction: column;
   justify-content: flex-start;
   gap: 1.5rem;
-  padding-top: 2rem;
+  padding-block: 2rem;
+  padding-inline: 1rem;
 }
 
 @media only screen and (min-width: 500px) {
@@ -335,4 +354,74 @@ input:checked ~ .bubble::after {
   .filter button span.text {
     display: initial;
   }
+}
+
+/* bubble input 2: electric boogaloo */
+fieldset label.boop {
+  --bubble-size: 1em;
+  --bubble-border-size: calc(var(--bubble-size) * 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  outline: 2px solid coral;
+  padding: 3rem;
+  background-color: lightcoral;
+}
+
+fieldset label.boop input {
+  display: none;
+}
+
+.boople {
+  --boople-padding: 1rem;
+  --boople-height: 3em;
+
+  display: block;
+  /* background-color: coral; */
+  height: var(--bubble-size);
+  aspect-ratio: 1 / 1;
+  position: relative;
+  /* padding: 3rem; */
+  /* padding: var(--boople-padding); */
+}
+
+.boople::before {
+  content: '';
+  display: block;
+  z-index: 100;
+  /* height: calc(100% - (); */
+  height: var(--bubble-size);
+  width: var(--bubble-size);
+  border-radius: 100vw;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  /* top: calc(var(--boople-padding) / 2);
+  left: calc(var(--boople-padding) / 2); */
+  border: var(--bubble-border-size) solid var(--work);
+  box-shadow: var(--work-glow);
+}
+
+input:checked ~ .boople::before {
+  /* border-color: greenyellow; */
+}
+
+.boople::after {
+  opacity: 0;
+  transition: 500ms opacity;
+  display: block;
+  content: '';
+  position: absolute;
+  border-radius: 100vw;
+  background-color: var(--work);
+  top: calc(var(--bubble-size) * 0.2);
+  left: calc(var(--bubble-size) * 0.2);
+  width: calc(var(--bubble-size) * 0.6);
+  height: calc(var(--bubble-size) * 0.6);
+}
+
+input:checked ~ .boople::after {
+  opacity: 1;
+  /* transition: 500ms opacity; */
 }
