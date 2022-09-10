@@ -1,0 +1,100 @@
+@import url('./css/reset.css');
+
+body {
+  background-color: lightgrey;
+}
+
+.row {
+  display: flex;
+  justify-content: stretch;
+  gap: 1rem;
+  background-color: aqua;
+}
+
+.row > * {
+  flex: 1;
+}
+
+header {
+  display: flex;
+  gap: 1ch;
+  background-color: yellow;
+}
+
+header > * {
+  font-size: 1.2rem;
+}
+
+header input {
+  flex: 1;
+  background-color: red;
+}
+
+input[type='text'] {
+  text-overflow: ellipsis;
+}
+
+input[type='text']:focus {
+  text-overflow: clip;
+}
+
+/* FORM */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+label.tile {
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.3em;
+}
+
+form label span {
+  font-size: 0.9rem;
+  padding-inline: 0.5rem;
+}
+
+form input[type='text'],
+label.tile,
+form textarea {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border: 1px solid darkgrey;
+  border-radius: 0.3em;
+  box-shadow: 2px 2px 2px 2px rgba(0 0 0 / 0.3);
+  background-color: white;
+  resize: none;
+}
+
+form textarea.description {
+  height: 8em;
+}
+
+form label input[type='text']:focus {
+  outline: 2px solid yellowgreen;
+}
+
+fomr label input[type='radio'] {
+  background-color: purple;
+  display: block;
+  height: 100px;
+  width: 100px;
+}
+
+form button {
+  background-color: black;
+  color: white;
+  display: block;
+  padding: 1em;
+  border-radius: 0.45em;
+  font-weight: 700;
+}
