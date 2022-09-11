@@ -1,9 +1,15 @@
+import { pipe, filter } from './fp.js';
+
 export const element = (tag) => document.createElement(tag);
 export const ε = element;
 
 export function withChildren(children) {
   return (el) => {
-    el.append(...(Array.isArray(children) ? children : [children]));
+    const filteredChildren = (
+      Array.isArray(children) ? children : [children]
+    ).filter((child) => !!child && typeof child !== 'function');
+
+    el.append(...filteredChildren);
     return el;
   };
 }
@@ -18,13 +24,20 @@ export function withEvent(type, listener) {
 export function withProperties(props) {
   return (el) => {
     Object.keys(props).forEach((prop) => {
-      if (Array.isArray(props[prop])) {
-        switch (prop) {
-          case 'class':
-            return el.setAttribute(prop, props[prop].join(' '));
+      switch (prop) {
+        default: {
+          el.setAttribute(prop, props[prop]);
+          break;
+        }
+        case 'class': {
+          const classes = pipe(
+            Array.isArray(props[prop]) ? props[prop] : [props[prop]],
+            filter(Boolean)
+          );
+          el.classList.add(...classes);
+          break;
         }
       }
-      el.setAttribute(prop, props[prop]);
     });
 
     return el;

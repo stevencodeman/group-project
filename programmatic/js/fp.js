@@ -31,3 +31,13 @@ export function map(fun) {
     return mappable.map(fun);
   };
 }
+
+export function filter(predicate) {
+  return (filterable) => {
+    if (typeof filterable.filter !== 'function') {
+      throw new Error('Filterable should implement the filter interface');
+    }
+
+    return filterable.filter(predicate);
+  };
+}

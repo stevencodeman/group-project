@@ -12,7 +12,11 @@ import { ε, withProperties, withEvent } from '../elements.js';
 export function textInput({ placeholder, value, onChange }) {
   return ρ(
     ε('input'),
-    withProperties({ type: 'text', value: value ?? '', placeholder }),
+    withProperties({
+      type: 'text',
+      value: value ?? '',
+      placeholder: placeholder ?? 'enter some text',
+    }),
     withEvent('change', (e) => {
       e.preventDefault();
       onChange?.(e.currentTarget.value);
