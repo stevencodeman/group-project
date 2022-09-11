@@ -1,19 +1,30 @@
-import { pipe as ρ, maybe, map } from './js/fp.js';
+import { ρ, maybe, map } from './js/fp.js';
 
-const ε = (tag) => document.createElement(tag);
+import {
+  ε,
+  withChildren,
+  withEvent,
+  withProperties,
+  blurFocusSelection,
+} from './js/elements.js';
+
+import { header, textInput } from './js/components/index.js';
 
 const app = document.getElementById('app');
 
-const header = document.createElement('header');
+// const header = document.createElement('header');
 
-header.append(saveSelectInput({ id: 'greeting', placeholder: 'your name' }));
+// header.append(saveSelectInput({ id: 'greeting', placeholder: 'your name' }));
 
 app.innerText = '';
 app.append(
-  ρ(
-    ε('header'),
-    withChildren([ρ(ε('h2'), withChildren('Hello,')), textInput('your name')])
-  ),
+  // ρ(
+  //   ε('header'),
+  //   withChildren([ρ(ε('h2'), withChildren('Hello,')), textInput('your name')])
+  // ),
+  header({
+    placeholder: 'Buttholes',
+  }),
   ρ(
     ε('form'),
     withEvent('submit', (e) =>
@@ -53,14 +64,19 @@ app.append(
         ])
       ),
       ρ(
-        ε('div'),
-        withProperties({ class: 'row' }),
+        ε('fieldset'),
+        // withProperties({ class: 'tile' }),
         withChildren([
+          ρ(ε('legend'), withChildren('Category')),
           ρ(
             ε('label'),
             withProperties({ class: 'tile' }),
             withChildren([
-              ρ(ε('span'), withChildren('Work')),
+              ρ(
+                ε('span'),
+                withProperties({ class: ['big', 'booty'] }),
+                withChildren('Work')
+              ),
               ρ(
                 ε('input'),
                 withProperties({
@@ -112,71 +128,6 @@ app.append(
     ])
   )
 );
-
-function textInput(placeholder) {
-  return ρ(ε('input'), withProperties({ type: 'text', placeholder }));
-}
-
-// function createElement(tag, properties, ...children) {
-//   const el = document.createElement(tag);
-
-//   if (properties) {
-//     Object.keys(properties).forEach((key) => {
-//       el[key] = properties[key];
-//     });
-//   }
-
-//   el.append(...(Array.isArray(children) ? children : [children]));
-
-//   return el;
-// }
-
-function withEvent(type, listener) {
-  return (el) => {
-    el.addEventListener(type, listener);
-    return el;
-  };
-}
-
-function withProperties(props) {
-  return (el) => {
-    Object.keys(props).forEach((prop) => {
-      el.setAttribute(prop, props[prop]);
-    });
-
-    return el;
-  };
-}
-
-function withChildren(children) {
-  return (el) => {
-    el.append(...(Array.isArray(children) ? children : [children]));
-    return el;
-  };
-}
-
-function blurFocusSelection(el) {
-  // early return the element if it's not an input
-  if (el.tagName.toLowerCase() !== 'input') return el;
-
-  // gonna store the selection state here
-  const state = { start: 0, end: 0 };
-
-  el.addEventListener('blur', ({ currentTarget: input }) => {
-    state.start = input.selectionStart;
-    state.end = input.selectionEnd;
-
-    input.selectionStart = 0;
-    input.selectionEnd = 0;
-  });
-
-  el.addEventListener('focus', ({ currentTarget: input }) => {
-    input.selectionStart = state.start;
-    input.selectionEnd = state.end;
-  });
-
-  return el;
-}
 
 function saveSelectInput({ id, placeholder }) {
   let start = 0;

@@ -4,6 +4,8 @@ export function pipe(val, ...funs) {
   return funs.reduce((acc, fun) => fun(acc), val);
 }
 
+export const ρ = pipe;
+
 function Nothing() {
   map: () => Nothing;
 }
